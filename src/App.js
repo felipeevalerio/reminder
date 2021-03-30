@@ -1,17 +1,25 @@
-import { Notifyer } from "./Notifyer.js";
+import { Notifyer } from "./Notifyer.js"
 import { Timer } from "./Timer.js"
+import { Emitter } from "./Emitter.js"
+
 
 const App = {
     async start(){
         try {
-            const time = 25 * 60
-            Timer.init(time)
+            await Notifyer.init()
+            Emitter.on("countdown-start",() => {
+                Notifyer.notify({
+                    title:"Hora do post",
+                    body:"Crie algum conteúdo para ajudar a comunidade."
+                })
+            })
+            
+            Emitter.on("countdown-end",() => {
+                Timer.init()
+            })
 
-            // await Notifyer.init()
-            // Notifyer.notify({
-            //     title:"Hora do post",
-            //     body:"Crie algum conteúdo para ajudar a comunidade."
-            // })
+            Timer.init()
+
 
         } catch (err) {
             console.error(err.message)
